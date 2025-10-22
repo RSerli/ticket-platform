@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+
+<body>
+
+    <th:block th:fragment="statusCell(current)">
+        <td th:if="${current.getId() = 1}" class="badge rounded-pill text-bg-danger" th:text="${current.getName()}">
+        </td>
+        <td th:if="${current.getId() = 2}" class="badge rounded-pill text-bg-warning" th:text="${current.getName()}">
+        </td>
+        <td th:if="${current.getId() = 3}" class="badge rounded-pill text-bg-success" th:text="${current.getName()}">
+        </td>
+    </th:block>
+
+</body>
+
+
+
+</html>

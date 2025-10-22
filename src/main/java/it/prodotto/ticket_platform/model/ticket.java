@@ -1,6 +1,6 @@
 package it.prodotto.ticket_platform.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -30,16 +30,19 @@ public class ticket {
     @NotBlank (message="Fornire un minimo di descrizione!")
     private String descrizione;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDate createdAt = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name="user_id")
+     @NotNull (message="Seleziona un tecnico")
     private user userAssigned;
 
     @ManyToOne
     @JoinColumn(name="state_id")
     private state actualStatus;
 
+    @OneToMany (mappedBy= "targetTicket")
+    private List<note> noteList;
 
     public state getActualStatus() {
         return actualStatus;
@@ -81,12 +84,12 @@ public class ticket {
     }
 
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -109,10 +112,4 @@ public class ticket {
     public void setNoteList(List<note> noteList) {
         this.noteList = noteList;
     }
-
-
-    @OneToMany (mappedBy= "targetTicket")
-    private List<note> noteList;
-
-
 }

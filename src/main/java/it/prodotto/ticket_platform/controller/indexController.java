@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import it.prodotto.ticket_platform.model.user;
 import it.prodotto.ticket_platform.repository.userRepository;
 
 
@@ -17,12 +18,14 @@ public class indexController {
     @Autowired
     private userRepository userRepo;
 
-    // ----- PAGINA INIZIALE -----
-    @GetMapping
-    public String main(Authentication authentication, Model model) {
+    @GetMapping()
+    public String main(Authentication auth, Model model) {
     
-        // model.addAttribute ("usernameLogged", authentication.getName());
-        // model.addAttribute ("authorityLogged", authentication.getAuthorities());
+        // punto dell'utente loggato
+        user loggedUser = userRepo.findByEmail(auth.getName()).get();
+        
+        model.addAttribute ("loggedUser",loggedUser);
+
 
         return "index";
     }

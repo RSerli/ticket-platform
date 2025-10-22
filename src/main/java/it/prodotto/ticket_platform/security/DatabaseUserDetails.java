@@ -13,13 +13,16 @@ import it.prodotto.ticket_platform.model.user;
 
 public class DatabaseUserDetails implements UserDetails{
 
-    private final String username;
+    private Integer id;
+    
+    private String username;
 
-    private final String password;
+    private String password;
 
-    private final Set<GrantedAuthority> authorities;
+    private Set<GrantedAuthority> authorities;
 
     public DatabaseUserDetails(user inputUser){
+        this.id = inputUser.getId();
         this.username = inputUser.getEmail();
         this.password = inputUser.getPassword();
         // prendiamo i ruoli assegnati all'user inserito
@@ -29,6 +32,8 @@ public class DatabaseUserDetails implements UserDetails{
             this.authorities.add(sGA);
         }
     }
+
+    
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -43,6 +48,10 @@ public class DatabaseUserDetails implements UserDetails{
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public Integer getId() {
+        return id;
     }
     
 }

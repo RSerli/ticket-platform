@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}" />
+    <title>Ticket Service</title>
+</head>
+
+<body>
+    <header>
+
+        <nav th:replace="fragments/navbar :: navbar('TicketCreate')"></nav>
+
+    </header>
+
+    <main>
+
+        <div class="container">
+            <!-- Titolo -->
+            <h2 class="text-center mb-3">New Ticket</h2>
+
+            <!-- form di creazione nuova pizza-->
+            <form class="row" th:object="${newTicket}" th:action="@{/CreaTicket}" method="post">
+                <!-- input nome ticket -->
+                <div class="col-12 col-md-8">
+                    <div class="mb-2">
+                        <label for="InputName" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="InputName" th:field="*{nome}"
+                            th:errorClass="is-invalid">
+                        <div th:if="${#fields.hasErrors('nome')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('nome')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- mostra data -->
+                <div class="col-12 col-md-4">
+                    <div class="mb-2">
+                        <label class="form-label">Data inserimento</label>
+                        <div th:text="*{createdAt}"></div>
+                    </div>
+                </div>
+                <!-- textarea descrizione ticket -->
+                <div class="col-12 col-md-8">
+                    <div class="mb-2">
+                        <label for="textAreaDescription" class="form-label">Descrizione</label>
+                        <textarea type="text" class="form-control" id="textAreaDescription" th:field="*{descrizione}"
+                            rows="5" th:errorClass="is-invalid"></textarea>
+                        <div th:if="${#fields.hasErrors('descrizione')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('descrizione')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Scelta tecnico -->
+                <div class="col-12 col-md-4">
+                    <div class="mb-2">
+                        <h4>Tecnici liberi</h4>
+                        <!-- alert se non ci sono disponibili tecnici -->
+                        <th:block th:unless="${freeTech.size() > 0}">
+                            <div class="alert alert-warning" role="alert">
+                                <div>Non ci sono tecnici disponibili!</div>
+                            </div>
+                        </th:block>
+                        <!-- lista radio -->
+                        <div class="form-check" th:each="singleTech : ${freeTech}">
+                            <input type="radio" class="form-check-input" th:id="|Indgredient_${singleTech.id}|"
+                                th:value="${singleTech.id}" th:field="*{userAssigned}">
+                            <label th:for="|Indgredient_${singleTech.id}|" th:text="${singleTech.name}"></label>
+                        </div>
+                        <div th:if="${#fields.hasErrors('userAssigned')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('userAssigned')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pulsanti di submit e cancellazione -->
+                <div class="d-grid gap-2 d-md-block">
+                    <button class="btn btn-primary" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-floppy" viewBox="0 0 16 16">
+                            <path d="M11 2H9v3h2z" />
+                            <path
+                                d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
+                        </svg>
+                        Salva
+                    </button>
+                    <a th:href="@{/index}" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x" viewBox="0 0 16 16">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+                        Cancella
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+    <!-- Bootstrap Bundle with Popper -->
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>
