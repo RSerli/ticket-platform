@@ -20,8 +20,24 @@
 
     <main>
 
-        <div class="container">
+        <div class="container mt-2">
+
+            <!-- alert warnig Ticket già presente -->
+            <th:block th:if="${warningAlertMessageTicket != null}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${warningAlertMessageTicket}"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
+            <!-- Alert warnig Seleziona tecnico -->
+            <th:block th:if="${warningAlertMessageTechnician != null}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${warningAlertMessageTechnician}"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
             <!-- Titolo -->
+
             <h2 class="text-center mb-3">New Ticket</h2>
 
             <!-- form di creazione nuova pizza-->
@@ -69,7 +85,7 @@
                                 <div>Non ci sono tecnici disponibili!</div>
                             </div>
                         </th:block>
-                        <!-- lista radio -->
+                        <!-- lista radio tecnici-->
                         <div class="form-check" th:each="singleTech : ${freeTech}">
                             <input type="radio" class="form-check-input" th:id="|Indgredient_${singleTech.id}|"
                                 th:value="${singleTech.id}" th:field="*{userAssigned}">

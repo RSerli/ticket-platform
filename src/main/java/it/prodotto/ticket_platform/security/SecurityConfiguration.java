@@ -14,16 +14,26 @@ public class SecurityConfiguration {
     //  catena di filtri dal più stretto al più largo
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(authorize -> authorize
+            // Permetto l'accesso alle risorse statiche
+            .requestMatchers("/css/**", "/login").permitAll()
 
-        http.authorizeHttpRequests()
-            // requestMatchers("INDIRIZZO").hasAuthority("AUTORIZZAZIONE")
-            // .requestMatchers("/**").hasAuthority("USER o ADMIN")
+            // Proteggi tutti gli altri percorsi richiedendo autenticazione.
+            // In questo modo, Spring Security forza l'esecuzione del Controller dopo il login.
+            .requestMatchers("/**").authenticated() 
+        )
+        .formLogin(form -> form
+            
+            .permitAll()
+            //Forzo il redirect per attivare l'indexController
+            .defaultSuccessUrl("/index", true) 
+        )
+        .logout(logout -> logout
+            .permitAll()
+        );
 
-            .requestMatchers("/**").permitAll()
-            .and().formLogin()
-            .and().logout();
-        return http.build();
-    }
+    return http.build();
+}
 
     // aggiunta classe servizio controllo input user login
     @Bean

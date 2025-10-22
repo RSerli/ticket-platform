@@ -2,6 +2,7 @@ package it.prodotto.ticket_platform.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +13,22 @@ import it.prodotto.ticket_platform.repository.userRepository;
 
 
 @Controller
-@RequestMapping("/index")
+@RequestMapping("/")
 public class indexController {
 
     @Autowired
     private userRepository userRepo;
 
-    @GetMapping()
-    public String main(Authentication auth, Model model) {
-    
-        // punto dell'utente loggato
-        user loggedUser = userRepo.findByEmail(auth.getName()).get();
+    @GetMapping("/index")
+    public String main(Model model) {
         
-        model.addAttribute ("loggedUser",loggedUser);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = auth.getName();
+
+        // punto dell'utente loggato
+        user detailUser = userRepo.findByEmail(currentPrincipalName).get();
+
+        model.addAttribute ("loggedUser",detailUser);
 
 
         return "index";

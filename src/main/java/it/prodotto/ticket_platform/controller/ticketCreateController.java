@@ -65,7 +65,13 @@ public class ticketCreateController {
         if (optionalTicket.isPresent())
         {
             bindingResult.addError(new ObjectError("errorDuplictedName", "Ticket già presente con lo stesso nome!"));
-            model.addAttribute("warningAlertMessage", "Ticket già presente!");
+            model.addAttribute("warningAlertMessageTicket", "Ticket già presente!");
+        }
+
+        // controllo se si è selezionato un tecnico
+        if(userInput.getUserAssigned() == null){
+            bindingResult.addError(new ObjectError("errorNoTechincianSelected", "Seleziona un tecnico!"));
+            model.addAttribute("warningAlertMessageTechnician", "Seleziona un tecnico!");
         }
 
         if(bindingResult.hasErrors()){
