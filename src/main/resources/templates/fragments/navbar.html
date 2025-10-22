@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+
+<body>
+    <nav th:fragment="navbar(current)" class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-2">
+        <div class="container-fluid">
+            <div id="navbarTitle" class="navbar-brand">Tickets</div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/index}"
+                            th:classAppend="${current == 'Home'} ? active : not-active">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>
