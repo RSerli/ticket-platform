@@ -13,11 +13,11 @@ import it.prodotto.ticket_platform.model.user;
 
 public class DatabaseUserDetails implements UserDetails{
 
-    private String username;
+    private final String username;
 
-    private String password;
+    private final String password;
 
-    private Set<GrantedAuthority> authorities;
+    private final Set<GrantedAuthority> authorities;
 
     public DatabaseUserDetails(user inputUser){
         this.username = inputUser.getEmail();

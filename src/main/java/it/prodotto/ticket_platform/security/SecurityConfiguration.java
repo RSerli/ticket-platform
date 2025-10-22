@@ -19,7 +19,7 @@ public class SecurityConfiguration {
             // requestMatchers("INDIRIZZO").hasAuthority("AUTORIZZAZIONE")
             // .requestMatchers("/**").hasAuthority("USER o ADMIN")
 
-            .requestMatchers("/*").permitAll()
+            .requestMatchers("/**").permitAll()
             .and().formLogin()
             .and().logout();
         return http.build();

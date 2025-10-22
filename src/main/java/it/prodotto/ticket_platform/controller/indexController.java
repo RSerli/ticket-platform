@@ -1,7 +1,9 @@
 package it.prodotto.ticket_platform.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,10 +17,13 @@ public class indexController {
     @Autowired
     private userRepository userRepo;
 
-    // ----- PAGINA INIZIALE con tutti i ticket associati all'utente loggato-----
-    @GetMapping("/{id}")
-    public String main() {
-        
+    // ----- PAGINA INIZIALE -----
+    @GetMapping
+    public String main(Authentication authentication, Model model) {
+    
+        // model.addAttribute ("usernameLogged", authentication.getName());
+        // model.addAttribute ("authorityLogged", authentication.getAuthorities());
+
         return "index";
     }
     
