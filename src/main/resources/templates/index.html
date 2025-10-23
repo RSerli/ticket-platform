@@ -20,22 +20,6 @@
 
     <main>
 
-        <!-- Alert di successo creazione ticket -->
-        <th:block th:if="${successAlertMessage != null}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <div th:text="${successAlertMessage}"></div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </th:block>
-
-        <!-- Alert di successo modifica ticket -->
-        <th:block th:if="${successAlertModMessage != null}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <div th:text="${successAlertModMessage}"></div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </th:block>
-
         <div class="container mt-3">
             <!-- heading di saluto -->
             <h2 th:text="|Ciao ${loggedUser.name}|"> </h2>
@@ -92,7 +76,9 @@
                         <td th:text="${singoloTicket.createdAt}"></td>
                         <!-- cella dper il bottone inserimento nota -->
                         <td>
-
+                            <a class="btn btn-secondary" th:href="@{/{id}/AggiungiNota(id=${singoloTicket.id})}">
+                                Nuova Nota
+                            </a>
                         </td>
                         <!-- cella pulsante di modifica -->
                         <td>

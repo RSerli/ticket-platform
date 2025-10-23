@@ -46,7 +46,7 @@
                 </div>
             </th:block>
 
-            <!-- crea la pagiga se è presente il ticket nel DB -->
+            <!-- crea la pagina se è presente il ticket nel DB -->
             <th:block th:if="${isSelectedTicket}">
                 <div class="container ticket-container mt-3">
                     <h2 class=" text-center border-bottom mb-3">Dettagli Ticket</h2>
@@ -71,7 +71,7 @@
                             <span class="main-subTitle">Tecnico assegnato:</span>
                             <span class="main-data" th:text="*{userAssigned.getName()}">none</span>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 col-md-8">
                             <span class="main-subTitle">Note:</span>
                             <!-- Alert che non ci sono note alegate al ticket selezionato -->
                             <th:block th:unless="*{noteList.size() > 0}">

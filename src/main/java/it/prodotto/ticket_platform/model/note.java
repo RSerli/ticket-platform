@@ -1,6 +1,6 @@
 package it.prodotto.ticket_platform.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ public class note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDate createdAt = LocalDate.now();
 
     @NotBlank
     @NotNull (message="Campo obbligatorio")
@@ -40,11 +40,11 @@ public class note {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

@@ -78,7 +78,7 @@ public class ticketCreateController {
             loadAvailableTechnicians(model);
             return "ticket/create";
         }
-
+        
         ticketRepo.save(userInput);
         redirectAttributes.addFlashAttribute("successAlertMessage", "Nuovo ticket inserito correttamente!");
         return "redirect:/viewTicket/" + userInput.getId();

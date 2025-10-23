@@ -98,7 +98,7 @@
                 </div>
 
                 <!-- tabella di tutte le note annesse al ticket -->
-                <div class="col-12">
+                <div class="col-12 col-md-8">
                     <h4>Note allegate</h4>
                     <!-- Alert che non ci sono note alegate al ticket selezionato -->
                     <th:block th:unless="${selectedTicketToModify.noteList.size() > 0}">
@@ -144,7 +144,7 @@
                 </div>
 
                 <!-- Stato di lavorazione -->
-                <div class="col-8">
+                <div class="col-12 col-md-4">
                     <h4>Working Status</h4>
                     <div class="form-check form-check-inline" th:each="singleStatus : ${allStatus}">
                         <input type="radio" class="form-check-input" th:id="|Status_${singleStatus.id}|"
