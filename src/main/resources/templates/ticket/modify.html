@@ -22,26 +22,21 @@
 
         <div class="container mt-2">
 
-            <!-- alert warnig Ticket già presente -->
-            <th:block th:if="${warningAlertMessageTicket != null}">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <div th:text="${warningAlertMessageTicket}"></div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </th:block>
             <!-- Alert warnig Seleziona tecnico -->
-            <th:block th:if="${warningAlertMessageTechnician != null}">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <div th:text="${warningAlertMessageTechnician}"></div>
+            <th:block th:if="${successAlertMessage != null}">
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <div th:text="${successAlertMessage}"></div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </th:block>
-            <!-- Titolo -->
 
-            <h2 class="text-center mb-3">New Ticket</h2>
+            <!-- Titolo -->
+            <h2 class="text-center mb-3">Modifica Ticket</h2>
 
             <!-- form di creazione nuovo ticket-->
-            <form class="row" th:object="${newTicket}" th:action="@{/CreaTicket}" method="post">
+            <form class="row" th:object="${selectedTicketToModify}"
+                th:action="@{/ModificaTicket/{id}(id=${selectedTicketToModify.id})}" method="post">
+
                 <!-- input nome ticket -->
                 <div class="col-12 col-md-8">
                     <div class="mb-2">
@@ -55,6 +50,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- mostra data -->
                 <div class="col-12 col-md-4">
                     <div class="mb-2">
@@ -62,6 +58,7 @@
                         <div th:text="*{createdAt}"></div>
                     </div>
                 </div>
+
                 <!-- textarea descrizione ticket -->
                 <div class="col-12 col-md-8">
                     <div class="mb-2">
@@ -75,6 +72,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Scelta tecnico -->
                 <div class="col-12 col-md-4">
                     <div class="mb-2">
@@ -98,8 +96,65 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- tabella di tutte le note annesse al ticket -->
+                <div class="col-12">
+                    <h4>Note allegate</h4>
+                    <!-- Alert che non ci sono note alegate al ticket selezionato -->
+                    <th:block th:unless="${selectedTicketToModify.noteList.size() > 0}">
+                        <div class="alert alert-info" role="alert">
+                            <div>Non ci sono note allegate!</div>
+                        </div>
+                    </th:block>
+                    <!-- mostra tabellla se presente almenu una nota -->
+                    <table th:if="${selectedTicketToModify.noteList.size() > 0}" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Descrizione</th> <!-- Header testo della nota -->
+                                <th scope="col">Autore</th> <!-- Header il nome dell'autode della nota -->
+                                <th scope="col">Data Creazione</th> <!-- Header per la data di creazione del ticket -->
+                                <th scope="col"></th> <!-- Header per il pulsante di eliminazione -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="singolaNota : ${selectedTicketToModify.noteList}">
+                                <!-- cella con la descrizione -->
+                                <td th:text="singolaNota.text"></td>
+                                <!-- cella con il nome dell'autode della nota  -->
+                                <td th:text="singolaNota.author"></td>
+                                <!-- cella della data di creazione -->
+                                <td th:text="singolaNota.createdAt"></td>
+                                <!-- cella per l'eliminazione della nota -->
+                                <td>
+                                    <form th:action="@{/cancellaNota}" method="post">
+                                        <button class="btn btn-danger" type="submit"
+                                            onclick="return confirm('Sei sicuro?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- Stato di lavorazione -->
+                <div class="col-8">
+                    <h4>Working Status</h4>
+                    <div class="form-check form-check-inline" th:each="singleStatus : ${allStatus}">
+                        <input type="radio" class="form-check-input" th:id="|Status_${singleStatus.id}|"
+                            th:value="${singleStatus.id}" th:field="*{actualStatus}">
+                        <label th:for="|Status_${singleStatus.id}|" th:text="${singleStatus.name}"></label>
+                    </div>
+                </div>
+
                 <!-- Pulsanti di submit e cancellazione -->
-                <div class="d-grid gap-2 d-md-block">
+                <div class="d-grid gap-2 d-md-block mb-2">
                     <button class="btn btn-primary" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-floppy" viewBox="0 0 16 16">

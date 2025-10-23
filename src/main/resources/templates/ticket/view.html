@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" th:href="@{/css/showTicket.css}">
+    <title>Ticket Service</title>
+</head>
+
+<body>
+    <header>
+
+        <nav th:replace="fragments/navbar :: navbar('TicketCreate')"></nav>
+
+    </header>
+
+    <main>
+
+        <div class="container mt-2">
+
+            <!-- Alert di successo creazione ticket -->
+            <th:block th:if="${successAlertMessage != null}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:text="${successAlertMessage}"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
+
+            <!-- Alert di successo modifica ticket -->
+            <th:block th:if="${successAlertModMessage != null}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:text="${successAlertModMessage}"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
+
+            <!-- Alert di warning se non è stata selezionata alcun ticket esistente -->
+            <th:block th:unless="${isSelectedTicket}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div>Non è presente il ticket selezionato nel DB!</div>
+                </div>
+            </th:block>
+
+            <!-- crea la pagiga se è presente il ticket nel DB -->
+            <th:block th:if="${isSelectedTicket}">
+                <div class="container ticket-container mt-3">
+                    <h2 class=" text-center border-bottom mb-3">Dettagli Ticket</h2>
+                    <div class="row" th:object="${selectedTicket}">
+                        <div class="col-12 col-md-8 mb-2">
+                            <span class="main-subTitle">Data creazione:</span>
+                            <span class="main-data" th:text="*{createdAt}">none</span>
+                        </div>
+                        <div class="col-12 col-md-8 mb-2">
+                            <span class="main-subTitle">Nome:</span>
+                            <span class="main-data" th:text="*{nome}">none</span>
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                            <span class="main-subTitle">Status:</span>
+                            <span class="main-data" th:text="*{actualStatus.getName()}">none</span>
+                        </div>
+                        <div class="col-12 col-md-8 mb-2">
+                            <span class="main-subTitle">Descrizione:</span>
+                            <div class="main-data" th:text="*{descrizione}">none</div>
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                            <span class="main-subTitle">Tecnico assegnato:</span>
+                            <span class="main-data" th:text="*{userAssigned.getName()}">none</span>
+                        </div>
+                        <div class="col-12">
+                            <span class="main-subTitle">Note:</span>
+                            <!-- Alert che non ci sono note alegate al ticket selezionato -->
+                            <th:block th:unless="*{noteList.size() > 0}">
+                                <div class="alert alert-info" role="alert">
+                                    <div>Non ci sono note allegate!</div>
+                                </div>
+                            </th:block>
+                            <!-- mostra tabellla se presente almenu una nota -->
+                            <table th:if="*{noteList.size() > 0}" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Descrizione</th> <!-- Header testo della nota -->
+                                        <th scope="col">Autore</th> <!-- Header il nome dell'autode della nota -->
+                                        <th scope="col">Data Creazione</th>
+                                        <!-- Header per la data di creazione del ticket -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="singolaNota : *{noteList}">
+                                        <!-- cella con la descrizione -->
+                                        <td th:text="singolaNota.text"></td>
+                                        <!-- cella con il nome dell'autode della nota  -->
+                                        <td th:text="singolaNota.author"></td>
+                                        <!-- cella della data di creazione -->
+                                        <td th:text="singolaNota.createdAt"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+
+        </div>
+
+    </main>
+    <!-- Bootstrap Bundle with Popper -->
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>
