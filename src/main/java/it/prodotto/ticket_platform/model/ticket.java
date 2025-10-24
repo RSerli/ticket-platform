@@ -34,15 +34,16 @@ public class ticket {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-     @NotNull (message="Seleziona un tecnico")
+    @NotNull (message="Seleziona un tecnico")
     private user userAssigned;
 
+    @NotNull (message="Seleziona uno stato")
     @ManyToOne
     @JoinColumn(name="state_id")
     private state actualStatus;
 
     @OneToMany (mappedBy= "targetTicket")
-    private List<note> noteList;
+    private List<Note> noteList;
 
     public state getActualStatus() {
         return actualStatus;
@@ -104,12 +105,12 @@ public class ticket {
     }
 
 
-    public List<note> getNoteList() {
+    public List<Note> getNoteList() {
         return noteList;
     }
 
 
-    public void setNoteList(List<note> noteList) {
+    public void setNoteList(List<Note> noteList) {
         this.noteList = noteList;
     }
 }

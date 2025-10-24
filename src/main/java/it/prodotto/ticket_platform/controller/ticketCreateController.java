@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prodotto.ticket_platform.model.ticket;
 import it.prodotto.ticket_platform.model.user;
+import it.prodotto.ticket_platform.repository.stateRepository;
 import it.prodotto.ticket_platform.repository.ticketRepository;
 import it.prodotto.ticket_platform.repository.userRepository;
 import jakarta.validation.Valid;
@@ -31,6 +32,9 @@ public class ticketCreateController {
 
     @Autowired
     private userRepository userRepo;
+
+    @Autowired
+    private stateRepository statusRepo;
 
     // caricamento dei tecnici disponibili
     private void loadAvailableTechnicians(Model model) {
@@ -52,6 +56,7 @@ public class ticketCreateController {
         loadAvailableTechnicians(model);
 
         model.addAttribute ("newTicket", new ticket());
+        model.addAttribute ("allStatus", statusRepo.findAll());
 
         return "/ticket/create";
     }
@@ -78,7 +83,7 @@ public class ticketCreateController {
             loadAvailableTechnicians(model);
             return "ticket/create";
         }
-        
+
         ticketRepo.save(userInput);
         redirectAttributes.addFlashAttribute("successAlertMessage", "Nuovo ticket inserito correttamente!");
         return "redirect:/viewTicket/" + userInput.getId();

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import it.prodotto.ticket_platform.model.note;
+import it.prodotto.ticket_platform.model.Note;
 import it.prodotto.ticket_platform.model.user;
 import it.prodotto.ticket_platform.repository.noteRepository;
 import it.prodotto.ticket_platform.repository.ticketRepository;
@@ -36,18 +36,18 @@ public class noteController {
     
 
     @GetMapping
-    public String main (@PathVariable("id") Integer id, Model model){
+    public String main (@PathVariable("id") Integer ide, Model model){
 
-        note singolaNota = new note();
-        singolaNota.setTargetTicket(ticketRepo.findById(id).get());
+        Note singolaNota = new Note();
+        singolaNota.setTargetTicket(ticketRepo.findById(ide).get());
         model.addAttribute("newNote", singolaNota);
 
         return "/note/create";
     }
 
 
-    @PostMapping()    
-    public String create(@Valid @ModelAttribute("newNote") note userInput, BindingResult bindingResult){
+    @PostMapping
+    public String create(@Valid @ModelAttribute("newNote") Note userInput, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return "note/create";

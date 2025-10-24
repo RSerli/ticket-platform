@@ -28,10 +28,10 @@
             <h2 class="text-center mb-3">Aggiungi Nota</h2>
 
             <!-- form di creazione nuovo ticket-->
-            <form class="row" th:object="${newNote}" th:action="@{/{id}/AggiungiNota(id=*{getTargetTicket().getId()})}"
-                method="post">
+            <form class="row" th:object="${newNote}"
+                th:action="@{/{identify}/AggiungiNota(identify=*{getTargetTicket().getId()})}" method="post">
 
-                <input type="hidden" th:field="*{targetTicket}">
+                <!-- <input type="hidden" th:field="*{targetTicket}"> -->
 
                 <!-- Mostra data di inserimento -->
                 <div class="col-12 col-md-4 mb-2">

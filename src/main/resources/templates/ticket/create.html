@@ -42,6 +42,9 @@
 
             <!-- form di creazione nuovo ticket-->
             <form class="row" th:object="${newTicket}" th:action="@{/CreaTicket}" method="post">
+
+                <!-- <input type="hidden" th:value="${toDoStatus}" th:field="*{actualStatus}"> -->
+
                 <!-- input nome ticket -->
                 <div class="col-12 col-md-8">
                     <div class="mb-2">
@@ -96,6 +99,22 @@
                                 <li th:each="err : ${#fields.errors('userAssigned')}" th:text="${err}"></li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Stato di lavorazione -->
+                <div class="col-12 col-md-4">
+                    <h4>Working Status</h4>
+                    <div class="form-check form-check-inline" th:each="singleStatus : ${allStatus}">
+                        <input type="radio" class="form-check-input" th:id="|Status_${singleStatus.id}|"
+                            th:value="${singleStatus.id}" th:field="*{actualStatus}"
+                            th:classAppend="${singleStatus.id == 1} ? checked : not-checked">
+                        <label th:for="|Status_${singleStatus.id}|" th:text="${singleStatus.name}"></label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('actualStatus')}" class="invalid-feedback">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('actualStatus')}" th:text="${err}"></li>
+                        </ul>
                     </div>
                 </div>
 
