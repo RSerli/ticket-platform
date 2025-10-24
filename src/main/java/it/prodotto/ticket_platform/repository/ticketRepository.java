@@ -19,4 +19,7 @@ public interface ticketRepository extends JpaRepository<ticket, Integer> {
 
     // QUERY Custom per raggruppameto ticket a secondo dello stato di lavorazione e utente assegnato
     public List<ticket> findByUserAssignedAndActualStatus(user userAssigned, state actualStatus);
+
+    // QUERY Custom di ricerca ticket per nome
+    public List<ticket> findByNomeContainingIgnoringCase(String nome);
 }

@@ -1,5 +1,7 @@
 package it.prodotto.ticket_platform.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.prodotto.ticket_platform.model.Note;
 import it.prodotto.ticket_platform.model.ticket;
@@ -30,9 +33,18 @@ public class allTicketListController {
 
 
     @GetMapping
-    public String mainView(Model model) {
+    public String mainView(@RequestParam(name="keywordTicketName", required=false) String keywordTicketName, Model model) {
         
-        model.addAttribute("allTickets", ticketRepo.findAll());
+        List<ticket> listResultSerching;
+
+        if (keywordTicketName == null || keywordTicketName.isBlank()) {
+            listResultSerching = ticketRepo.findAll();
+        } else {
+            listResultSerching = ticketRepo.findByNomeContainingIgnoringCase(keywordTicketName);
+        }
+
+        model.addAttribute("allTickets", listResultSerching);
+
 
         model.addAttribute("allUser", userRepo.findAll());
 
