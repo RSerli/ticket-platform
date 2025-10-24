@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import it.prodotto.ticket_platform.model.user;
+import it.prodotto.ticket_platform.repository.stateRepository;
 import it.prodotto.ticket_platform.repository.userRepository;
 
 
@@ -18,6 +19,9 @@ public class indexController {
 
     @Autowired
     private userRepository userRepo;
+
+    @Autowired
+    private stateRepository statusRepo;
 
     @GetMapping("/index")
     public String main(Model model) {
@@ -29,6 +33,8 @@ public class indexController {
         user detailUser = userRepo.findByEmail(currentPrincipalName).get();
 
         model.addAttribute ("loggedUser",detailUser);
+
+        model.addAttribute("allStatus", statusRepo.findAll());
 
 
         return "index";

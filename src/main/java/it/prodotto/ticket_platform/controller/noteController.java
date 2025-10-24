@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping("{id}/AggiungiNota")
+@RequestMapping("{ide}/AggiungiNota")
 public class noteController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class noteController {
     
 
     @GetMapping
-    public String main (@PathVariable("id") Integer ide, Model model){
+    public String main (@PathVariable("ide") Integer ide, Model model){
 
         Note singolaNota = new Note();
         singolaNota.setTargetTicket(ticketRepo.findById(ide).get());
@@ -47,7 +47,7 @@ public class noteController {
 
 
     @PostMapping
-    public String create(@Valid @ModelAttribute("newNote") Note userInput, BindingResult bindingResult){
+    public String create(@Valid @ModelAttribute("newNote") Note userInput, BindingResult bindingResult, @PathVariable("ide") Integer ide){
 
         if(bindingResult.hasErrors()){
             return "note/create";
@@ -60,6 +60,8 @@ public class noteController {
         user detailUser = userRepo.findByEmail(currentPrincipalName).get();
 
         userInput.setAuthor(detailUser.getName());
+
+        userInput.setTargetTicket(ticketRepo.findById(ide).get());
 
         noteRepo.save(userInput);
         return "redirect:/viewTicket/" + userInput.getTargetTicket().getId();

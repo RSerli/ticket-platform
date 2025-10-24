@@ -119,14 +119,14 @@
                         <tbody>
                             <tr th:each="singolaNota : ${selectedTicketToModify.noteList}">
                                 <!-- cella con la descrizione -->
-                                <td th:text="singolaNota.text"></td>
+                                <td th:text="${singolaNota.text}"></td>
                                 <!-- cella con il nome dell'autode della nota  -->
-                                <td th:text="singolaNota.author"></td>
+                                <td th:text="${singolaNota.author}"></td>
                                 <!-- cella della data di creazione -->
-                                <td th:text="singolaNota.createdAt"></td>
+                                <td th:text="${singolaNota.createdAt}"></td>
                                 <!-- cella per l'eliminazione della nota -->
                                 <td>
-                                    <form th:action="@{/cancellaNota}" method="post">
+                                    <form th:action="@{/cancellaNota/{id} (id= ${singolaNota.id})}" method="post">
                                         <button class="btn btn-danger" type="submit"
                                             onclick="return confirm('Sei sicuro?')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

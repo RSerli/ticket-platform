@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.prodotto.ticket_platform.model.Note;
 import it.prodotto.ticket_platform.model.ticket;
 import it.prodotto.ticket_platform.model.user;
 import it.prodotto.ticket_platform.repository.noteRepository;
@@ -80,11 +81,13 @@ public class ticketModifiyController {
         return "redirect:/viewTicket/" + userInput.getId();
     }
 
-    @PostMapping("/cancellaNota")
-    public String cancellaNota(@PathVariable("id") Integer id){
+    @PostMapping("/cancellaNota/{ide}")
+    public String cancellaNota(@PathVariable("ide") Integer id){
 
-        noteRepo.deleteById(id);
+        Note singolaNotaDaEliminare = noteRepo.findById(id).get();
 
-        return "redirect:/ticket/modify";
+        noteRepo.delete(singolaNotaDaEliminare);
+
+        return "ticket/modify";
     }
 }
