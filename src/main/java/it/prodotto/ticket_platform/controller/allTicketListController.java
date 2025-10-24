@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.prodotto.ticket_platform.model.Note;
 import it.prodotto.ticket_platform.model.ticket;
+import it.prodotto.ticket_platform.model.user;
 import it.prodotto.ticket_platform.repository.noteRepository;
+import it.prodotto.ticket_platform.repository.stateRepository;
 import it.prodotto.ticket_platform.repository.ticketRepository;
 import it.prodotto.ticket_platform.repository.userRepository;
 
@@ -30,6 +32,9 @@ public class allTicketListController {
 
     @Autowired
     private userRepository userRepo;
+
+    @Autowired
+    private stateRepository statusRepo;
 
 
     @GetMapping
@@ -69,4 +74,31 @@ public class allTicketListController {
         return "redirect:/ListaTickets";
     }
     
+    @PostMapping("/refreshTec")
+    public String refreshTec(){
+
+        // per ogni tecnico faccio un sum-up dei ticket che ha e setto il suo stato di disponiobilità
+
+        List<user> allUsers = userRepo.findAll();
+
+        for(user singlUser : allUsers){
+
+            List<ticket> toDoTicketsList = ticketRepo.findByUserAssignedAndActualStatus(singlUser, statusRepo.findById(2).get());
+            Integer numberToDoTickets = toDoTicketsList.size();
+
+            List<ticket> toWorkTicketsList = ticketRepo.findByUserAssignedAndActualStatus(singlUser, statusRepo.findById(1).get());
+            Integer numberToWorkTickets = toWorkTicketsList.size();
+
+            if (numberToDoTickets > 0 || numberToWorkTickets > 0) {
+                singlUser.setAvailable(false);
+            } else {
+                singlUser.setAvailable(true);
+            }
+
+            userRepo.save(singlUser);
+
+        }
+
+        return "redirect:/ListaTickets";
+    }
 }
