@@ -18,6 +18,7 @@ public class SecurityConfiguration {
             // Permetto l'accesso alle risorse statiche
             .requestMatchers("/css/**", "/login").permitAll()
 
+
             // Proteggi tutti gli altri percorsi richiedendo autenticazione.
             // In questo modo, Spring Security forza l'esecuzione del Controller dopo il login.
             .requestMatchers("/**").authenticated() 

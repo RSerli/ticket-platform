@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}" />
+    <title>Ticket Service</title>
+</head>
+
+<body>
+    <header>
+
+        <nav th:replace="fragments/navbar :: navbar('SearchTickets')"></nav>
+
+    </header>
+
+    <main>
+
+        <div class="container mt-3">
+            <!-- Titolo prinicipale -->
+            <h2 class="text-center">Lista dei ticket</h2>
+
+            <div class="contaier">
+                <div class="row ">
+                    <!-- parte di pagina dedicata alla lista di ticket ticket -->
+                    <div class="col-12 col-md-8 ">
+
+                        <!-- Alert che non ci sono ticket nel DB -->
+                        <th:block th:unless="${allTickets.size() > 0}">
+                            <div class="alert alert-warning" role="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-exclamation-diamond" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
+                                    <path
+                                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                </svg>
+                                <div>Non esiste alcun ticket!</div>
+                            </div>
+                        </th:block>
+
+                        <!-- Tabella dei ticket -->
+                        <table th:if="${allTickets.size() > 0}" class="table table-striped">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th> <!-- Header per il pulsante di view del ticket -->
+                                    <th scope="col">Nome</th> <!-- Header per il nome del ticket -->
+                                    <th scope="col">Status</th> <!-- Header per lo status del ticket -->
+                                    <th scope="col">Assegnato a</th> <!-- Header a chi è stato assegnato il ticket -->
+                                    <th scope="col">Data Creazione</th>
+                                    <!-- Header della data di creazione del ticket -->
+                                    <th scope="col"></th> <!-- Header per il pulsante per aggiunta di una nota -->
+                                    <th scope="col"></th> <!-- Header per il pulsante di modifica del ticket -->
+                                    <th scope="col"></th> <!-- Header per la cancellazione del ticket-->
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr th:each="singoloTicket : ${allTickets}">
+                                    <!-- cella pulsante della view -->
+                                    <td>
+                                        <a th:href="@{|/viewTicket/${singoloTicket.id}|}" class="btn btn-light">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                                <path
+                                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <!-- cella dell nome del biglietto -->
+                                    <td th:text="${singoloTicket.nome}"></td>
+                                    <!-- cella dello status -->
+                                    <td th:if="${singoloTicket.actualStatus.getId() == 1}">
+                                        <span class="text-danger"
+                                            th:text="${singoloTicket.actualStatus.getName()}"></span>
+                                    </td>
+                                    <td th:if="${singoloTicket.actualStatus.getId() == 2}">
+                                        <span class="text-warning"
+                                            th:text="${singoloTicket.actualStatus.getName()}"></span>
+                                    </td>
+                                    <td th:if="${singoloTicket.actualStatus.getId() == 3}">
+                                        <span class="text-success"
+                                            th:text="${singoloTicket.actualStatus.getName()}"></span>
+                                    </td>
+                                    <!-- cella del nome a chi è stato assegnato il ticket -->
+                                    <td th:text="${singoloTicket.userAssigned.getName()}"></td>
+                                    <!-- cella della data di creazione -->
+                                    <td th:text="${singoloTicket.createdAt}"></td>
+                                    <!-- cella dper il bottone inserimento nota -->
+                                    <td>
+                                        <a class="btn btn-secondary"
+                                            th:href="@{/{id}/AggiungiNota(id=${singoloTicket.id})}">
+                                            Nuova Nota
+                                        </a>
+                                    </td>
+                                    <!-- cella per il pulsate della modifica -->
+                                    <td>
+                                        <a th:href="@{|/ModificaTicket/${singoloTicket.id}|}" class="btn btn-light">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <!-- cella pulsante per la cancellazzione del ticket -->
+                                    <td>
+                                        <form th:action="@{/ListaTickets/cancellaTicket/{id}(id = ${singoloTicket.id})}"
+                                            method="post">
+
+                                            <button class="btn btn-danger" type="submit"
+                                                onclick="return confirm('Sei sicuro?')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <!-- spazio per vedere quali tecnici sono disponibili -->
+                    <div class="col-12 col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                Disponibilità tecnici
+                            </div>
+
+                            <!-- lista disponibilità tecnici  -->
+                            <div>
+                                <div th:each="singoloUser : ${allUser}" class="p-1">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <div th:text="${singoloUser.name}"></div>
+
+                                        <th:block th:unless="${singoloUser.isAvailable}">
+                                            <div class="border border-danger text-danger rounded-pill p-2">
+                                                Non disponibile!
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${singoloUser.isAvailable}">
+                                            <div class="border border-success text-success rounded-pill p-2">
+                                                Disponibile!
+                                            </div>
+                                        </th:block>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>
