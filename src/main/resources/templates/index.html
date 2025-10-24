@@ -27,7 +27,7 @@
             <div class="contaier">
                 <div class="row ">
                     <!-- parte di pagina dedicata ai ticket -->
-                    <div class="col-12 col-md-8 border-end border-3">
+                    <div class="col-12 col-md-8 ">
 
                         <!-- Alert che non ci sono ticket legati all'user loggato -->
                         <th:block th:unless="${loggedUser.assignedTickets.size() > 0}">
@@ -121,15 +121,47 @@
 
                         </table>
                     </div>
+                    <!-- spazio per informazioni dell'user loggato -->
+                    <div class="col-12 col-md-4">
+                        <!-- card per vedere la disponibilità dell'utente loggato e un elenco di ticket aperti -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div>Disponibilità:</div>
+                                <!-- a seconda del bit di disponibilità del'utente loggato mostra una cosa diversa -->
+                                <th:block th:unless="${loggedUser.isAvailable}">
+                                    <div class="border border-danger text-danger rounded-pill p-2">
+                                        Non disponibile!
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${loggedUser.isAvailable}">
+                                    <div class="border border-success text-success rounded-pill p-2">
+                                        Disponibile!
+                                    </div>
+                                </th:block>
+                            </div>
+                            <!-- sum-up dei ticket associati all'utente loggato -->
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <span>Hai </span>
+                                    <span class="text-success" th:text="${numberFinishedTickets}"></span>
+                                    <span> ticket terminato/i</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>Hai </span>
+                                    <span class="text-warning" th:text="${numberToDoTickets}"></span>
+                                    <span> ticket in corso</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>Hai </span>
+                                    <span class="text-danger" th:text="${numberToWorkTickets}"></span>
+                                    <span> ticket da fare</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
-
-
         </div>
-
-
     </main>
 
     <!-- Bootstrap Bundle with Popper -->
