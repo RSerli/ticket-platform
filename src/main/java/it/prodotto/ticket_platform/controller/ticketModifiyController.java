@@ -86,8 +86,10 @@ public class ticketModifiyController {
 
         Note singolaNotaDaEliminare = noteRepo.findById(id).get();
 
+        Integer IdTicketAssNotaDaEliminare = singolaNotaDaEliminare.getTargetTicket().getId();
+
         noteRepo.delete(singolaNotaDaEliminare);
 
-        return "redirect:/ModificaTicket/" + id;
+        return "redirect:/ModificaTicket/" + IdTicketAssNotaDaEliminare;
     }
 }

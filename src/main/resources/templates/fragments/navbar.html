@@ -24,11 +24,11 @@
                         th:classAppend="${current == 'Home'} ? active : not-active">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/CreaTicket}"
+                    <a class="nav-link" th:href="@{/CreaTicket}" sec:authorize="hasAuthority('ADMIN')"
                         th:classAppend="${current == 'TicketCreate'} ? active : not-active">Crea Ticket</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/ListaTickets}"
+                    <a class="nav-link" th:href="@{/ListaTickets}" sec:authorize="hasAuthority('ADMIN')"
                         th:classAppend="${current == 'SearchTickets'} ? active : not-active">Trova Ticket</a>
                 </li>
             </ul>

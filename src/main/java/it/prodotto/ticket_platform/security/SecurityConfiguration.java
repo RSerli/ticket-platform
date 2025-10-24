@@ -2,6 +2,7 @@ package it.prodotto.ticket_platform.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -14,24 +15,19 @@ public class SecurityConfiguration {
     //  catena di filtri dal più stretto al più largo
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests(authorize -> authorize
-            // Permetto l'accesso alle risorse statiche
-            .requestMatchers("/css/**", "/login").permitAll()
-
-
-            // Proteggi tutti gli altri percorsi richiedendo autenticazione.
-            // In questo modo, Spring Security forza l'esecuzione del Controller dopo il login.
-            .requestMatchers("/**").authenticated() 
-        )
-        .formLogin(form -> form
-            
-            .permitAll()
-            //Forzo il redirect per attivare l'indexController
-            .defaultSuccessUrl("/index", true) 
-        )
-        .logout(logout -> logout
-            .permitAll()
-        );
+    http.authorizeHttpRequests()
+            .requestMatchers("/ListaTickets", "/ListaTickets/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/ListaTickets").hasAuthority("ADMIN")
+            .requestMatchers("/CreaTicket", "/CreaTicket/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/CreaTicket").hasAuthority("ADMIN")
+            .requestMatchers("/ModificaTicket", "/ModificaTicket/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/ModificaTicket").hasAuthority("ADMIN")
+            .requestMatchers("/viewTicket/**").hasAnyAuthority("USER", "ADMIN")
+            .requestMatchers("/index").hasAnyAuthority("USER", "ADMIN")
+            .requestMatchers(HttpMethod.POST, "/index").hasAnyAuthority("USER", "ADMIN")
+            .requestMatchers("/**").permitAll()
+            .and().formLogin()
+            .and().logout();
 
     return http.build();
 }

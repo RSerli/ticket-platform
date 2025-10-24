@@ -17,6 +17,7 @@ import it.prodotto.ticket_platform.repository.ticketRepository;
 import it.prodotto.ticket_platform.repository.userRepository;
 
 
+
 @Controller
 @RequestMapping("/")
 public class indexController {
@@ -30,7 +31,13 @@ public class indexController {
     @Autowired
     private ticketRepository ticketRepo;
 
-    @GetMapping("/index")
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/main";
+    }
+    
+
+    @GetMapping("/main")
     public String main(Model model) {
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -64,6 +71,7 @@ public class indexController {
         } else {
             detailUser.setAvailable(true);
         }
+
 
         userRepo.save(detailUser);
 
