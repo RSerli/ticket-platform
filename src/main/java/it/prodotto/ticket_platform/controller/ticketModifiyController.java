@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping("/ModificaTicket/{id}")
+@RequestMapping("/ModificaTicket")
 public class ticketModifiyController {
 
     @Autowired
@@ -54,7 +54,7 @@ public class ticketModifiyController {
         model.addAttribute ("freeTech", freeTechnician);
     }
 
-   @GetMapping
+   @GetMapping ("/{id}")
     public String main(@PathVariable("id") Integer id,Model model) {
 
         loadAvailableTechnicians(model);
@@ -88,6 +88,6 @@ public class ticketModifiyController {
 
         noteRepo.delete(singolaNotaDaEliminare);
 
-        return "ticket/modify";
+        return "redirect:/ModificaTicket/" + id;
     }
 }
