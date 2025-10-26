@@ -2,6 +2,8 @@ package it.prodotto.ticket_platform.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,6 +36,7 @@ public class user {
     private boolean isAvailable;
 
     @OneToMany (mappedBy="userAssigned")
+    @JsonBackReference
     private Set<ticket> assignedTickets;
 
     private String name;

@@ -22,4 +22,7 @@ public interface ticketRepository extends JpaRepository<ticket, Integer> {
 
     // QUERY Custom di ricerca ticket per nome
     public List<ticket> findByNomeContainingIgnoringCase(String nome);
+
+    // QUERY Custom di ricerca ticket per status
+    public List<ticket> findByActualStatus(state actualStatus);
 }
