@@ -57,20 +57,22 @@ public class ticketModifiyController {
    @GetMapping ("/{id}")
     public String main(@PathVariable("id") Integer id,Model model) {
 
-        loadAvailableTechnicians(model);
+        // loadAvailableTechnicians(model);
 
+        model.addAttribute ("freeTech", userRepo.findAll());
         model.addAttribute ("allStatus", statusRepo.findAll());
         model.addAttribute ("selectedTicketToModify", ticketRepo.findById(id).get());
 
         return "/ticket/modify";
     }
 
-    @PostMapping
+    @PostMapping ("/{id}")
     public String save(@Valid @ModelAttribute("selectedTicketToModify") ticket userInput, BindingResult bindingResult, RedirectAttributes redirectAttributes,@PathVariable("id") Integer id ,Model model) {
         
 
         if(bindingResult.hasErrors()){
-            loadAvailableTechnicians(model);
+            // loadAvailableTechnicians(model);
+            model.addAttribute ("freeTech", userRepo.findAll());
             model.addAttribute ("allStatus", statusRepo.findAll());
             model.addAttribute ("selectedTicketToModify", ticketRepo.findById(id).get());
             return "ticket/modify";

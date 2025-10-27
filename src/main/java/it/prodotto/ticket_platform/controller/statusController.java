@@ -36,6 +36,6 @@ public class statusController {
 
         ticketRepo.save(changeStatusTicket);
 
-        return "redirect:/index";
+        return "redirect:/main";
     }
 }
