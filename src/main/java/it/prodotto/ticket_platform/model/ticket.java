@@ -23,94 +23,81 @@ public class ticket {
     private Integer id;
 
     @NotBlank
-    @NotNull (message="Campo obbligatorio")
+    @NotNull(message = "Campo obbligatorio")
     private String nome;
 
     @NotNull
-    @NotBlank (message="Fornire un minimo di descrizione!")
+    @NotBlank(message = "Fornire un minimo di descrizione!")
     private String descrizione;
 
     private LocalDate createdAt = LocalDate.now();
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    @NotNull (message="Seleziona un tecnico")
+    @JoinColumn(name = "user_id")
+    @NotNull(message = "Seleziona un tecnico")
     private user userAssigned;
 
-    @NotNull (message="Seleziona uno stato")
+    @NotNull(message = "Seleziona uno stato")
     @ManyToOne
-    @JoinColumn(name="state_id")
+    @JoinColumn(name = "state_id")
     private state actualStatus;
 
-    @OneToMany (mappedBy= "targetTicket")
-    private List<Note> noteList;
+    @OneToMany(mappedBy = "targetTicket")
+    private List<note> noteList;
 
     public state getActualStatus() {
         return actualStatus;
     }
 
-
     public void setActualStatus(state actualStatus) {
         this.actualStatus = actualStatus;
     }
-
 
     public Integer getId() {
         return id;
     }
 
-
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public String getNome() {
         return nome;
     }
 
-
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 
     public String getDescrizione() {
         return descrizione;
     }
 
-
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-
 
     public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
-
 
     public user getUserAssigned() {
         return userAssigned;
     }
 
-
     public void setUserAssigned(user userAssigned) {
         this.userAssigned = userAssigned;
     }
 
-
-    public List<Note> getNoteList() {
+    public List<note> getNoteList() {
         return noteList;
     }
 
-
-    public void setNoteList(List<Note> noteList) {
+    public void setNoteList(List<note> noteList) {
         this.noteList = noteList;
     }
 }

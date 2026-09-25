@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import it.prodotto.ticket_platform.model.Note;
+import it.prodotto.ticket_platform.model.note;
 import it.prodotto.ticket_platform.model.user;
 import it.prodotto.ticket_platform.repository.noteRepository;
 import it.prodotto.ticket_platform.repository.ticketRepository;
 import it.prodotto.ticket_platform.repository.userRepository;
 import jakarta.validation.Valid;
-
 
 @Controller
 @RequestMapping("{ide}/AggiungiNota")
@@ -33,23 +32,21 @@ public class noteController {
     @Autowired
     private noteRepository noteRepo;
 
-    
-
     @GetMapping
-    public String main (@PathVariable("ide") Integer ide, Model model){
+    public String main(@PathVariable("ide") Integer ide, Model model) {
 
-        Note singolaNota = new Note();
+        note singolaNota = new note();
         singolaNota.setTargetTicket(ticketRepo.findById(ide).get());
         model.addAttribute("newNote", singolaNota);
 
         return "/note/create";
     }
 
-
     @PostMapping
-    public String create(@Valid @ModelAttribute("newNote") Note userInput, BindingResult bindingResult, @PathVariable("ide") Integer ide){
+    public String create(@Valid @ModelAttribute("newNote") note userInput, BindingResult bindingResult,
+            @PathVariable("ide") Integer ide) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "note/create";
         }
 
@@ -67,5 +64,4 @@ public class noteController {
         return "redirect:/viewTicket/" + userInput.getTargetTicket().getId();
     }
 
-    
 }
