@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.prodotto.ticket_platform.model.Note;
+import it.prodotto.ticket_platform.model.note;
 import it.prodotto.ticket_platform.model.ticket;
 import it.prodotto.ticket_platform.model.user;
 import it.prodotto.ticket_platform.repository.noteRepository;
@@ -22,7 +22,6 @@ import it.prodotto.ticket_platform.repository.stateRepository;
 import it.prodotto.ticket_platform.repository.ticketRepository;
 import it.prodotto.ticket_platform.repository.userRepository;
 import jakarta.validation.Valid;
-
 
 @Controller
 @RequestMapping("/ModificaTicket")
@@ -51,30 +50,30 @@ public class ticketModifiyController {
             }
         }
 
-        model.addAttribute ("freeTech", freeTechnician);
+        model.addAttribute("freeTech", freeTechnician);
     }
 
-   @GetMapping ("/{id}")
-    public String main(@PathVariable("id") Integer id,Model model) {
+    @GetMapping("/{id}")
+    public String main(@PathVariable("id") Integer id, Model model) {
 
         // loadAvailableTechnicians(model);
 
-        model.addAttribute ("freeTech", userRepo.findAll());
-        model.addAttribute ("allStatus", statusRepo.findAll());
-        model.addAttribute ("selectedTicketToModify", ticketRepo.findById(id).get());
+        model.addAttribute("freeTech", userRepo.findAll());
+        model.addAttribute("allStatus", statusRepo.findAll());
+        model.addAttribute("selectedTicketToModify", ticketRepo.findById(id).get());
 
         return "/ticket/modify";
     }
 
-    @PostMapping ("/{id}")
-    public String save(@Valid @ModelAttribute("selectedTicketToModify") ticket userInput, BindingResult bindingResult, RedirectAttributes redirectAttributes,@PathVariable("id") Integer id ,Model model) {
-        
+    @PostMapping("/{id}")
+    public String save(@Valid @ModelAttribute("selectedTicketToModify") ticket userInput, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes, @PathVariable("id") Integer id, Model model) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             // loadAvailableTechnicians(model);
-            model.addAttribute ("freeTech", userRepo.findAll());
-            model.addAttribute ("allStatus", statusRepo.findAll());
-            model.addAttribute ("selectedTicketToModify", ticketRepo.findById(id).get());
+            model.addAttribute("freeTech", userRepo.findAll());
+            model.addAttribute("allStatus", statusRepo.findAll());
+            model.addAttribute("selectedTicketToModify", ticketRepo.findById(id).get());
             return "ticket/modify";
         }
 
@@ -84,9 +83,9 @@ public class ticketModifiyController {
     }
 
     @PostMapping("/cancellaNota/{ide}")
-    public String cancellaNota(@PathVariable("ide") Integer id){
+    public String cancellaNota(@PathVariable("ide") Integer id) {
 
-        Note singolaNotaDaEliminare = noteRepo.findById(id).get();
+        note singolaNotaDaEliminare = noteRepo.findById(id).get();
 
         Integer IdTicketAssNotaDaEliminare = singolaNotaDaEliminare.getTargetTicket().getId();
 

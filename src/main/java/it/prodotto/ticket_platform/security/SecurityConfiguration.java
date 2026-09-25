@@ -12,25 +12,25 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-    //  catena di filtri dal più stretto al più largo
+    // catena di filtri dal più stretto al più largo
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests()
-            .requestMatchers("/ListaTickets", "/ListaTickets/**").hasAuthority("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/ListaTickets").hasAuthority("ADMIN")
-            .requestMatchers("/CreaTicket", "/CreaTicket/**").hasAuthority("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/CreaTicket").hasAuthority("ADMIN")
-            .requestMatchers("/ModificaTicket", "/ModificaTicket/**").hasAuthority("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/ModificaTicket").hasAuthority("ADMIN")
-            .requestMatchers("/viewTicket/**").hasAnyAuthority("USER", "ADMIN")
-            .requestMatchers("/index").hasAnyAuthority("USER", "ADMIN")
-            .requestMatchers(HttpMethod.POST, "/index").hasAnyAuthority("USER", "ADMIN")
-            .requestMatchers("/**").permitAll()
-            .and().formLogin()
-            .and().logout();
+        http.authorizeHttpRequests()
+                .requestMatchers("/ListaTickets", "/ListaTickets/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/ListaTickets").hasAuthority("ADMIN")
+                .requestMatchers("/CreaTicket", "/CreaTicket/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/CreaTicket").hasAuthority("ADMIN")
+                .requestMatchers("/ModificaTicket", "/ModificaTicket/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/ModificaTicket").hasAuthority("ADMIN")
+                .requestMatchers("/viewTicket/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/index").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/index").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/**").permitAll()
+                .and().formLogin()
+                .and().logout();
 
-    return http.build();
-}
+        return http.build();
+    }
 
     // aggiunta classe servizio controllo input user login
     @Bean
@@ -44,10 +44,10 @@ public class SecurityConfiguration {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // controllo utente e psw di autenticazione del login 
+    // controllo utente e psw di autenticazione del login
     @Bean
     DaoAuthenticationProvider authenticationProvider() {
-    // inseriamo direttamente nel costruttore il nostro userDetailsService;
+        // inseriamo direttamente nel costruttore il nostro userDetailsService;
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService(userDetailsService());

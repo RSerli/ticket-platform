@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "note")
-public class Note {
+public class note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +25,13 @@ public class Note {
     private LocalDate createdAt = LocalDate.now();
 
     @NotBlank
-    @NotNull (message="Campo obbligatorio")
+    @NotNull(message = "Campo obbligatorio")
     private String text;
 
     private String author;
 
     @ManyToOne
-    @JoinColumn(name="ticket_id", nullable=false)
+    @JoinColumn(name = "ticket_id", nullable = false)
     @JsonBackReference
     private ticket targetTicket;
 
